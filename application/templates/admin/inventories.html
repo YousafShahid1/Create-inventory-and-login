@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h2>Add Inventory</h2>
+    <form method="POST" action="{{ url_for('inventory.admin_dashboard') }}">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.title.label(class="form-control-label") }}
+            {{ form.title(class="form-control form-control-lg" + (' is-invalid' if form.title.errors else '')) }}
+            {% if form.title.errors %}
+                <div class="invalid-feedback">
+                    {% for error in form.title.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        {{ form.submit(class="btn btn-primary") }}
+    </form>
+
+
+
+    <br >
+
+
+    <h2>List of Inventories</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>View</th>
+                    <th>Delete</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for inventory in inventories %}
+                <tr>
+                    <td>{{ inventory.title }}</td>
+                    <td><a class="btn btn-primary" href="{{ url_for('ingredient.ingredients',inventory_id=inventory.id) }}">View</a></td>
+                    <td>
+                        <form method="POST" action="{{ url_for('inventory.delete_inventory', inventory_id=inventory.id) }}">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
+
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
